@@ -9,7 +9,6 @@ using std::function;
 using std::vector;
 using std::list;
 using iter_decor::callback_iterator;
-using iter_decor::make_callback_iterator;
 using std::find;
 
 void
@@ -33,36 +32,24 @@ list<char> ll;
 auto b = vec.begin(), e = vec.end();
 auto c = ll.begin(), ce = ll.end();
 
-auto bb = make_callback_iterator(
+callback_iterator<vector<int>::iterator>
+iter_b (b, func2);
+
+callback_iterator<vector<int>::iterator>
+iter_e (e, func);
+
+callback_iterator<vector<int>::iterator>
+iter_func (b, functor());
+
+callback_iterator<vector<int>::iterator>
+iter_lam (
   b
-, func2
-);
-
-auto cce = make_callback_iterator(
-  e
-, function<void(vector<int>::iterator)>
-  (func)
-);
-
-auto gvg = make_callback_iterator(
-  e
-, func
-);
-
-auto tor = make_callback_iterator(
-  e
-, functor()
-);
-
-auto lam = make_callback_iterator(
-  e
 , [](vector<int>::iterator){
   std::cout << "Lam called.\n";
   }
 );
 
-//find(bb, bbe, 3);
-std::is_any(bb, cce, 4);
+//find(iter_b, iter_e, 3);
 
 return 0;
 }

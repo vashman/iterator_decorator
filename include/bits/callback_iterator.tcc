@@ -5,9 +5,10 @@ namespace iter_decor{
 /* ctor */
 template <
   typename Iter
-, typename Callback
+, typename Category
 >
-  callback_iterator<Iter,Callback>
+template <typename Callback>
+  callback_iterator<Iter,Category>
 ::callback_iterator(
   Iter const & _iter
 , Callback _callback
@@ -19,10 +20,10 @@ template <
 /**/
 template <
   typename Iter
-, typename Callback
+, typename Category
 >
-callback_iterator<Iter,Callback> &
-  callback_iterator<Iter,Callback>
+callback_iterator<Iter,Category> &
+  callback_iterator<Iter,Category>
 ::operator++(
 ){
 this->callback(this->iter);
@@ -53,20 +54,6 @@ T const *
 ){
 return *this->iter)->;
 }*/
-
-/**/
-template <
-  typename Iter
-, typename Callback
->
-callback_iterator<Iter,Callback> &
-  callback_iterator<Iter,Callback>
-::operator++(
-  int _i
-){
-  while (_i != 0){}
-return *this;
-}
 
 /**/
 /*template <

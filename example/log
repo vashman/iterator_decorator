@@ -1,0 +1,59 @@
+In file included from basic.cpp:3:
+In file included from /usr/include//c++/4.7/algorithm:63:
+/usr/include//c++/4.7/bits/stl_algo.h:158:25: error: invalid operands to binary expression ('iter_decor::callback_iterator<__gnu_cxx::__normal_iterator<int *, std::vector<int, std::allocator<int> > > >' and 'iter_decor::callback_iterator<__gnu_cxx::__normal_iterator<int *, std::vector<int, std::allocator<int> > > >')
+        __trip_count = (__last - __first) >> 2;
+                        ~~~~~~ ^ ~~~~~~~
+/usr/include//c++/4.7/bits/stl_algo.h:4465:19: note: in instantiation of function template specialization 'std::__find<iter_decor::callback_iterator<__gnu_cxx::__normal_iterator<int *, std::vector<int, std::allocator<int> > > >, int>' requested here
+      return std::__find(__first, __last, __val,
+                  ^
+basic.cpp:63:1: note: in instantiation of function template specialization 'std::find<iter_decor::callback_iterator<__gnu_cxx::__normal_iterator<int *, std::vector<int, std::allocator<int> > > >, int>' requested here
+find(bb, cce, 3);
+^
+/usr/include//c++/4.7/bits/stl_bvector.h:183:3: note: candidate function not viable: no known conversion from 'iter_decor::callback_iterator<__gnu_cxx::__normal_iterator<int *, std::vector<int, std::allocator<int> > > >' to 'const std::_Bit_iterator_base' for 1st argument
+  operator-(const _Bit_iterator_base& __x, const _Bit_iterator_base& __y)
+  ^
+/usr/include//c++/4.7/bits/stl_iterator.h:329:5: note: candidate template ignored: could not match 'reverse_iterator' against 'callback_iterator'
+    operator-(const reverse_iterator<_Iterator>& __x,
+    ^
+/usr/include//c++/4.7/bits/stl_iterator.h:381:5: note: candidate template ignored: could not match 'reverse_iterator' against 'callback_iterator'
+    operator-(const reverse_iterator<_IteratorL>& __x,
+    ^
+/usr/include//c++/4.7/bits/stl_iterator.h:886:5: note: candidate template ignored: could not match '__normal_iterator' against 'callback_iterator'
+    operator-(const __normal_iterator<_IteratorL, _Container>& __lhs,
+    ^
+/usr/include//c++/4.7/bits/stl_iterator.h:898:5: note: candidate template ignored: could not match '__normal_iterator' against 'callback_iterator'
+    operator-(const __normal_iterator<_Iterator, _Container>& __lhs,
+    ^
+/usr/include//c++/4.7/bits/stl_iterator.h:1106:5: note: candidate template ignored: could not match 'move_iterator' against 'callback_iterator'
+    operator-(const move_iterator<_IteratorL>& __x,
+    ^
+/usr/include//c++/4.7/bits/stl_iterator.h:1113:5: note: candidate template ignored: could not match 'move_iterator' against 'callback_iterator'
+    operator-(const move_iterator<_Iterator>& __x,
+    ^
+In file included from basic.cpp:3:
+In file included from /usr/include//c++/4.7/algorithm:63:
+/usr/include//c++/4.7/bits/stl_algo.h:179:22: error: invalid operands to binary expression ('iter_decor::callback_iterator<__gnu_cxx::__normal_iterator<int *, std::vector<int, std::allocator<int> > > >' and 'iter_decor::callback_iterator<__gnu_cxx::__normal_iterator<int *, std::vector<int, std::allocator<int> > > >')
+      switch (__last - __first)
+              ~~~~~~ ^ ~~~~~~~
+/usr/include//c++/4.7/bits/stl_bvector.h:183:3: note: candidate function not viable: no known conversion from 'iter_decor::callback_iterator<__gnu_cxx::__normal_iterator<int *, std::vector<int, std::allocator<int> > > >' to 'const std::_Bit_iterator_base' for 1st argument
+  operator-(const _Bit_iterator_base& __x, const _Bit_iterator_base& __y)
+  ^
+/usr/include//c++/4.7/bits/stl_iterator.h:329:5: note: candidate template ignored: could not match 'reverse_iterator' against 'callback_iterator'
+    operator-(const reverse_iterator<_Iterator>& __x,
+    ^
+/usr/include//c++/4.7/bits/stl_iterator.h:381:5: note: candidate template ignored: could not match 'reverse_iterator' against 'callback_iterator'
+    operator-(const reverse_iterator<_IteratorL>& __x,
+    ^
+/usr/include//c++/4.7/bits/stl_iterator.h:886:5: note: candidate template ignored: could not match '__normal_iterator' against 'callback_iterator'
+    operator-(const __normal_iterator<_IteratorL, _Container>& __lhs,
+    ^
+/usr/include//c++/4.7/bits/stl_iterator.h:898:5: note: candidate template ignored: could not match '__normal_iterator' against 'callback_iterator'
+    operator-(const __normal_iterator<_Iterator, _Container>& __lhs,
+    ^
+/usr/include//c++/4.7/bits/stl_iterator.h:1106:5: note: candidate template ignored: could not match 'move_iterator' against 'callback_iterator'
+    operator-(const move_iterator<_IteratorL>& __x,
+    ^
+/usr/include//c++/4.7/bits/stl_iterator.h:1113:5: note: candidate template ignored: could not match 'move_iterator' against 'callback_iterator'
+    operator-(const move_iterator<_Iterator>& __x,
+    ^
+2 errors generated.

@@ -3,13 +3,11 @@
 
 #include <iterator>
 #include <type_traits>
+#include <functional>
 
 namespace iter_decor {
 /**/
-template <
-  typename Iter
-, typename Callback
->
+template <typename Iter>
 class callback_iterator
 : public std::iterator <
   typename Iter::iterator_category
@@ -20,11 +18,15 @@ class callback_iterator
 >
 {
 public:
-  typedef typename
-  Iter::value_type value_type;
+  typedef Iter iterator_type;
 
   typedef typename
-  Iter::difference_type difference_type;
+  std::iterator_traits<Iter>::value_type
+  value_type;
+
+  typedef typename
+    std::iterator_traits<Iter>
+  ::difference_type difference_type;
 
   typedef typename
   Iter::pointer pointer;
@@ -36,191 +38,124 @@ public:
     Iter
   ::iterator_category iterator_category;
 
+  /* ctor */
+  template <typename Callback>
   explicit
   callback_iterator(
-    Iter const &
-  , Callback
-  );
+    Iter const & _iter
+  , Callback _callback
+  )
+  : callback (_callback)
+  , iter (_iter) {
+  }
 
+  /* ctor copy */
   callback_iterator(
-    callback_iterator<Iter,Callback>
+    callback_iterator<Iter>
     const &
   ) = default;
 
-  callback_iterator<Iter,Callback> &
+  /* operator copy */
+  callback_iterator<Iter> &
   operator=(
     callback_iterator const &
   ) = default;
 
+  /* operator move */
   callback_iterator(
-    callback_iterator<Iter,Callback> &&
+    callback_iterator<Iter> &&
   ) = default;
 
-  callback_iterator<Iter,Callback> &
+  /* ctor move */
+  callback_iterator<Iter> &
   operator=(
-    callback_iterator &&
+    callback_iterator<Iter> &&
   ) = default;
 
   /* operator increment */
-  callback_iterator<Iter,Callback> &
-  operator++();
+  std::enable_if<
+  callback_iterator<Iter> &>::value
+  operator++(
+  ){
+  this->callback(this->iter);
+  (this->iter)++;
+  return *this;
+  }
 
-  /**/
-  template <
-    typename Cat = iterator_category
-  >
-  typename std::enable_if<
-    (
-      std::is_same<
-        Cat
-      , std::input_iterator_tag
-      >::value
-    ||
-      std::is_same<
-        Cat
-        , std::forward_iterator_tag
-        >::value
-    ||
-      std::is_same<
-        Cat
-      , std::bidirectional_iterator_tag
-      >::value
-    ||
-      std::is_same<
-        Cat
-      , std::random_access_iterator_tag
-      >::value
-    )
-  , bool
-  >::type
+  /* == */
+/*  bool
   operator==(
-    callback_iterator<Iter,Callback>
+    callback_iterator<Iter>
     const & _callback
   ) const {
   this->callback(this->iter);
-  return (*this == _callback.iter);
+  return (this->iter == _callback.iter);
   }
-
-  /**/
-  template <
-    typename Cat = iterator_category
-  >
-  typename std::enable_if<
-    (
-      std::is_same<
-        Cat
-      , std::input_iterator_tag
-      >::value
-    ||
-      std::is_same<
-        Cat
-        , std::forward_iterator_tag
-        >::value
-    ||
-      std::is_same<
-        Cat
-      , std::bidirectional_iterator_tag
-      >::value
-    ||
-      std::is_same<
-        Cat
-      , std::random_access_iterator_tag
-      >::value
-    )
-  , bool
-  >::type
+*/
+  /* != */
+/*  bool
   operator!=(
-    callback_iterator<Iter,Callback>
+    callback_iterator<Iter>
     const & _callback
   ) const {
   this->callback(this->iter);
-  return !(*this == _callback);
+  return (this->iter != _callback.iter);
   }
-
-  bool
+*/
+  /* == iterator_type */
+/*  bool
   operator==(
     Iter const & _iter
   ) const {
+  this->callback(this->iter);
   return (this->iter == _iter);
   }
-
-  bool
+*/
+  /* != iterator_type */
+/*  bool
   operator!=(
     Iter const & _iter
   ) const {
-  this->callback(this->iterator);
+  this->callback(this->iter);
   return (this->iter != _iter);
   }
-
+*/
   /* operator * */
   typename Iter::reference
-  operator*() const;
+  operator*(){
+  this->callback(this->iter);
+  return *(this->iter);
+  }
 
   /* operator -> */
-  typename Iter::pointer
-  operator->() const;
-
-
+/*  typename Iter::pointer
+  operator->(){
+  this->callback(this->iter);
+  return (this-iter).operator->();
+  }
+*/
   /* operator increment */
-  callback_iterator<Iter,Callback> &
+  callback_iterator<Iter> &
   operator++(
-    int
-  );
+    int _dummy
+  ){
+  this->callback(this->iter);
+  ++(this->iter);
+  return *this;
+  }
 
-  template <
-    typename Cat = iterator_category
-  >
-  typename std::enable_if<
-    (
-      std::is_same<
-        Cat
-      , std::input_iterator_tag
-      >::value
-    ||
-      std::is_same<
-        Cat
-        , std::forward_iterator_tag
-        >::value
-    ||
-      std::is_same<
-        Cat
-      , std::bidirectional_iterator_tag
-      >::value
-    ||
-      std::is_same<
-        Cat
-      , std::random_access_iterator_tag
-      >::value
-    )
-  , callback_iterator<Iter,Callback> &
-  >::type
+  /* operator deincrement */
+/*  callback_iterator<Iter> &
   operator--(){
   this->callback(this->iter);
   (this->iter)--;
   return *this;
   }
-
+*/
 private:
-  Callback callback;
+  std::function<void(Iter &)> callback;
   Iter iter;
 };
 
-template <
-  typename Iter
-, typename Callback
->
-callback_iterator<Iter,Callback>
-make_callback_iterator(
-  Iter _iter
-, Callback _callback
-){
-return
-callback_iterator<Iter,Callback>(
-  _iter
-, _callback
-);
-}
-
 } /* iter_decor */
-#include "bits/callback_iterator.tcc"
 #endif
