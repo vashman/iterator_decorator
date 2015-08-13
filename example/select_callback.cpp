@@ -1,3 +1,5 @@
+// Shows how to select when to run callback.
+
 #include <iostream>
 #include <functional>
 #include <algorithm>
@@ -10,6 +12,7 @@ using std::vector;
 using std::list;
 using iter_decor::callback_iterator;
 using std::find;
+using iter_decor::iter_ops;
 
 void
 func(vector<int>::iterator);
@@ -33,7 +36,7 @@ auto b = vec.begin(), e = vec.end();
 auto c = ll.begin(), ce = ll.end();
 
 callback_iterator<vector<int>::iterator>
-iter_b (b, func2);
+iter_b (b, func2, iter_ops::increment);
 
 callback_iterator<vector<int>::iterator>
 iter_e (e, func);
