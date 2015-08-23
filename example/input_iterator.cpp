@@ -1,5 +1,4 @@
 #include <iostream>
-#include <algorithm>
 #include <iterator>
 #include "../include/callback_iterator.hpp"
 
@@ -34,4 +33,5 @@ return 0;
 /**/
 void
 func(istream_iterator<char> const &){
+std::cout << "f-called." << std::endl;
 }

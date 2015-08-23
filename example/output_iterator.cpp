@@ -1,5 +1,4 @@
 #include <iostream>
-#include <algorithm>
 #include <iterator>
 #include "../include/callback_iterator.hpp"
 

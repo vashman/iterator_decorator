@@ -1,30 +1,44 @@
 //
 
-#ifndef ITER_DECOR_CALLBACK_ITERATOR_HPP
-#define ITER_DECOR_CALLBACK_ITERATOR_HPP
+#ifndef ITERATOR_DECORATOR_CALLBACK\
+_ITERATOR_HPP
+#define ITERATOR_DECORATOR_CALLBACK\
+_ITERATOR_HPP
 
 #include <iterator>
 #include <type_traits>
 #include <functional>
+#include "iterator.hpp"
 
-namespace iter_decor {
+namespace iterator_decorator {
 /**/
 struct iter_ops {
   typedef unsigned int operation_type;
+
+  static const
+  operation_type none = 0x00;
+
   static const
   operation_type read = 0x01; // x
+
   static const
   operation_type write = 0x02; // x
+
   static const
   operation_type increment = 0x04; // x
+
   static const
   operation_type deincrement = 0x08;//
+
   static const
   operation_type random = 0x10; //
+
   static const
   operation_type add = 0x20;//
+
   static const
   operation_type subtract = 0x40;//
+
   static const
   operation_type deference = 0x80;// x
 };
@@ -99,21 +113,7 @@ public:
   ) = default;
 
   /* operator increment */
-  template <
-    typename Cat = iterator_category
-  >
-  typename std::enable_if<
-    std::is_same<
-      Cat
-    , std::output_iterator_tag
-    >::value
-  ||
-    std::is_same<
-      Cat
-    , std::input_iterator_tag
-    >::value
-  , callback_iterator<Iter> &
-  >::type
+  callback_iterator<Iter> &
   operator++(
   ){
     if (
@@ -257,21 +257,7 @@ public:
   }
 
   /* operator increment */
-  template <
-    typename Cat = iterator_category
-  >
-  typename std::enable_if<
-    std::is_same<
-      Cat
-    , std::output_iterator_tag
-    >::value
-  ||
-    std::is_same<
-      Cat
-    , std::input_iterator_tag
-    >::value
-  , callback_iterator<Iter> &
-  >::type
+  callback_iterator<Iter> &
   operator++(
     int _dummy
   ){
@@ -322,6 +308,56 @@ make_callback_iterator(
 return
 callback_iterator<Iter>(
   _iter
+, _callback
+, _ops
+);
+}
+
+template <
+  typename T
+, typename Callback
+, typename Container
+>
+auto
+begin (
+  Container _con
+, Callback _callback
+, iter_ops::operation_type const _ops
+) -> decltype(
+  make_callback_iterator(
+    begin<T>(_con)
+  , _callback
+  , _ops
+  )
+){
+return
+make_callback_iterator(
+  begin<T>(_con)
+, _callback
+, _ops
+);
+}
+
+template <
+  typename T
+, typename Callback
+, typename Container
+>
+auto
+end (
+  Container _con
+, Callback _callback
+, iter_ops::operation_type const _ops
+) -> decltype(
+  make_callback_iterator(
+    end<T>(_con)
+  , _callback
+  , _ops
+  )
+){
+return
+make_callback_iterator(
+  end<T>(_con)
 , _callback
 , _ops
 );

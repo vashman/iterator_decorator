@@ -10,9 +10,11 @@
 using std::function;
 using std::vector;
 using std::list;
-using iter_decor::callback_iterator;
+using iterator_decorator::callback_iterator;
 using std::find;
-using iter_decor::iter_ops;
+using iterator_decorator::iter_ops;
+using iterator_decorator::begin;
+using iterator_decorator::end;
 
 void
 func(vector<int>::iterator);
@@ -51,6 +53,10 @@ iter_lam (
   std::cout << "Lam called.\n";
   }
 );
+
+auto
+  aiter (begin<int>(vec, func2, iter_ops::increment))
+, aend (end<int>(vec, func2, iter_ops::increment));
 
 //find(iter_b, iter_e, 3);
 
