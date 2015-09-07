@@ -1,71 +1,42 @@
-#ifndef ITER_DECOR_CALLBACK_ITERATOR_TCC
-#define ITER_DECOR_CALLBACK_ITERATOR_TCC
+#ifndef ITERATOR_DECORATOR_CALLBACK\
+_ITERATOR_TCC
+#define ITERATOR_DECORATOR_CALLBACK\
+_ITERATOR_TCC
 
-namespace iter_decor{
+namespace itertor_decorator {
 /* ctor */
-template <
-  typename Iter
-, typename Category
->
+template <typename Iter>
 template <typename Callback>
-  callback_iterator<Iter,Category>
+  callback_iterator<Iter>
 ::callback_iterator(
   Iter const & _iter
 , Callback _callback
+, iter_ops::operation_type const
+  _ops
 )
 : callback (_callback)
-, iter (_iter) {
+, iter (_iter)
+, ops (_ops) {
 }
 
-/**/
-template <
-  typename Iter
-, typename Category
->
-callback_iterator<Iter,Category> &
-  callback_iterator<Iter,Category>
-::operator++(
-){
-this->callback(this->iter);
-this->iter++;
-return *this;
+/* get_iterator */
+template <typename Iter>
+Iter
+callback_iterator<Iter>::get_iterator (
+) const {
+return this->iter;
 }
 
-/**/
-/*template <
-  typename Iter
-, typename Callback
->
-T const &
-  callback_iterator<Iter,Callback>
-::operator*(
+/* do_callback */
+template <typename Iter>
+void
+callback_iterator<Iter>::do_callback (
+  iter_ops::operation_type const _ops
 ){
-return *(this->iter);
-}*/
-
-/**/
-/*template <
-  typename Iter
-, typename Callback
->
-T const *
-  callback_iterator<Iter,Callback>
-::operator->(
-){
-return *this->iter)->;
-}*/
-
-/**/
-/*template <
-  typename Iter
-, typename Callback
->
-callback_iterator<Iter,Callback> &
-  callback_iterator<Iter,Callback>
-::operator--(
-){
-return *this;
-}*/
+  if (this->ops & _ops){
+  this->callback(this->iter);
+  }
+}
 
 } /* iter_decor */
 #endif 

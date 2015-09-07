@@ -79,15 +79,11 @@ public:
   template <typename Callback>
   explicit
   callback_iterator(
-    Iter const & _iter
-  , Callback _callback
+    Iter const &
+  , Callback
   , iter_ops::operation_type const
     _ops = 0x00
-  )
-  : callback (_callback)
-  , iter (_iter)
-  , ops (_ops) {
-  }
+  );
 
   /* ctor copy */
   callback_iterator(
@@ -116,11 +112,8 @@ public:
   callback_iterator<Iter> &
   operator++(
   ){
-    if (
-      (this->ops & iter_ops::increment)
-    ){
-    this->callback(this->iter);
-    }
+  this->
+  do_callback(iter_ops::increment);
   (this->iter)++;
   return *this;
   }
@@ -175,11 +168,8 @@ public:
   , Iter
   >::type
   operator*(){
-    if (
-      this->ops & iter_ops::deference
-    ){
-    this->callback(this->iter);
-    }
+  this->
+  do_callback(iter_ops::deference);
   return *(this->iter);
   }
 
@@ -197,11 +187,8 @@ public:
   , typename Iter::value_type
   >::type
   operator*(){
-    if (
-      this->ops & iter_ops::deference
-    ){
-    this->callback(this->iter);
-    }
+  this->
+  do_callback(iter_ops::deference);
   return *(this->iter);
   }
 
@@ -221,11 +208,8 @@ public:
   , typename Iter::reference
   >::type
   operator*(){
-    if (
-      this->ops & iter_ops::deference
-    ){
-    this->callback(this->iter);
-    }
+  this->
+  do_callback(iter_ops::deference);
   return *(this->iter);
   }
 
@@ -248,11 +232,8 @@ public:
   , typename Iter::pointer
   >::type
   operator->(){
-    if (
-      this->ops & iter_ops::deference
-    ){
-    this->callback(this->iter);
-    }
+  this->
+  do_callback(iter_ops::deference);
   return (this-iter).operator->();
   }
 
@@ -261,11 +242,8 @@ public:
   operator++(
     int _dummy
   ){
-    if (
-      this->ops & iter_ops::increment
-    ){
-    this->callback(this->iter);
-    }
+  this->
+  do_callback(iter_ops::increment);
   ++(this->iter);
   return *this;
   }
@@ -279,89 +257,156 @@ public:
   , callback_iterator<Iter> & 
   >::value
   operator--(){
-    if (
-      this->ops & iter_ops::deincrement
-    ){
-    this->callback(this->iter);
-    }
+  this->
+  do_callback(iter_ops::deincrement);
   (this->iter)--;
   return *this;
   }
 
+/* Random Access */
+  template <
+    typename Cat = iterator_category
+  >
+  std::enable_if<
+    std::is_same<
+      Cat
+    , std::random_access_iterator_tag
+    >::value
+  , bool
+  >::value
+  operator<(
+    callback_iterator<Iter> const & _rhs
+  ) const {
+  return (this->iter < _rhs.iter);
+  }
+
+  template <
+    typename Cat = iterator_category
+  >
+  std::enable_if<
+    std::is_same<
+      Cat
+    , std::random_access_iterator_tag
+    >::value
+  , bool
+  >::value
+  operator>(
+    callback_iterator<Iter> const & _rhs
+  ) const {
+  return (this->iter > _rhs.iter);
+  }
+
+  template <
+    typename Cat = iterator_category
+  >
+  std::enable_if<
+    std::is_same<
+      Cat
+    , std::random_access_iterator_tag
+    >::value
+  , bool
+  >::value
+  operator<=(
+    callback_iterator<Iter> const & _rhs
+  ) const {
+  return (this->iter <= _rhs.iter);
+  }
+
+  template <
+    typename Cat = iterator_category
+  >
+  std::enable_if<
+    std::is_same<
+      Cat
+    , std::random_access_iterator_tag
+    >::value
+  , bool
+  >::value
+  operator>=(
+    callback_iterator<Iter> const & _rhs
+  ) const {
+  return (this->iter >= _rhs.iter);
+  }
+
+  /* operator += */
+  template <
+    typename Cat = iterator_category
+  >
+  std::enable_if<
+    std::is_same<
+      Cat
+    , std::random_access_iterator_tag
+    >::value
+  , callback_iterator<Iter> &
+  >::value
+  operator+=(
+    size_type _size
+  ) const {
+  this->iter += _size;
+  return *this;
+  }
+
+  /* operator + */
+  template <
+    typename Cat = iterator_category
+  >
+  std::enable_if<
+    std::is_same<
+      Cat
+    , std::random_access_iterator_tag
+    >::value
+  , callback_iterator<Iter>
+  >::value
+  operator+(
+    size_type _size
+  ) const {
+  return 
+  callback_iterator<Iter>(
+    (this->iter+size)
+  , this->callback
+  , (this->iter+size)
+  );
+  }
+
+  /* operator -= */
+  template <
+    typename Cat = iterator_category
+  >
+  std::enable_if<
+    std::is_same<
+      Cat
+    , std::random_access_iterator_tag
+    >::value
+  , callback_iterator<Iter> &
+  >::value
+  operator-=(
+    size_type _size
+  ) const {
+  this->iter -= _size;
+  return *this;
+  }
+
+  Iter
+  get_iterator() const;
+
 private:
-  std::function<void(Iter &)> callback;
+  std::function<
+    void(
+      Iter &
+    , iter_ops::operation_type const
+    )
+  > callback;
+
   Iter iter;
+
   iter_ops::operation_type const ops;
+
+  void
+  do_callback(
+    iter_ops::operation_type const
+  );
 };
 
-template <
-  typename Callback
-, typename Iter
->
-callback_iterator<Iter>
-make_callback_iterator(
-  Iter _iter
-, Callback _callback
-, iter_ops::operation_type const
-  _ops = 0x00
-){
-return
-callback_iterator<Iter>(
-  _iter
-, _callback
-, _ops
-);
-}
-
-template <
-  typename T
-, typename Callback
-, typename Container
->
-auto
-begin (
-  Container _con
-, Callback _callback
-, iter_ops::operation_type const _ops
-) -> decltype(
-  make_callback_iterator(
-    begin<T>(_con)
-  , _callback
-  , _ops
-  )
-){
-return
-make_callback_iterator(
-  begin<T>(_con)
-, _callback
-, _ops
-);
-}
-
-template <
-  typename T
-, typename Callback
-, typename Container
->
-auto
-end (
-  Container _con
-, Callback _callback
-, iter_ops::operation_type const _ops
-) -> decltype(
-  make_callback_iterator(
-    end<T>(_con)
-  , _callback
-  , _ops
-  )
-){
-return
-make_callback_iterator(
-  end<T>(_con)
-, _callback
-, _ops
-);
-}
-
 } /* iter_decor */
+#include <bits/callback_iterator.tcc>
 #endif
