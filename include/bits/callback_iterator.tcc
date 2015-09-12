@@ -3,7 +3,8 @@ _ITERATOR_TCC
 #define ITERATOR_DECORATOR_CALLBACK\
 _ITERATOR_TCC
 
-namespace itertor_decorator {
+namespace iterator_decorator {
+
 /* ctor */
 template <typename Iter>
 template <typename Callback>
@@ -11,10 +12,21 @@ template <typename Callback>
 ::callback_iterator(
   Iter const & _iter
 , Callback _callback
-, iter_ops::operation_type const
-  _ops
+, iter_ops::operation_type const _ops
 )
 : callback (_callback)
+, iter (_iter)
+, ops (_ops) {
+}
+
+/* ctor */
+template <typename Iter>
+  callback_iterator<Iter>
+::callback_iterator(
+  Iter const & _iter
+, iter_ops::operation_type const _ops
+)
+: callback ()
 , iter (_iter)
 , ops (_ops) {
 }
@@ -33,10 +45,14 @@ void
 callback_iterator<Iter>::do_callback (
   iter_ops::operation_type const _ops
 ){
-  if (this->ops & _ops){
-  this->callback(this->iter);
+  if (
+    (this->callback)
+  &&
+    (this->ops & _ops)
+  ){
+  this->callback(this->iter, _ops);
   }
 }
 
 } /* iter_decor */
-#endif 
+#endif

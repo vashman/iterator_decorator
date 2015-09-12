@@ -4,6 +4,7 @@
 *.o
 *.obj
 *.out
+runme
 
 # Precompiled Headers
 *.gch
@@ -31,6 +32,7 @@
 # Editor Files
 *.swp
 *.*~
+/.c9
 
 # Log files
 *.log
