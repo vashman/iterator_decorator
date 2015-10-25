@@ -44,7 +44,10 @@ operation_type deference = 0x80;
 }; /* iter_ops */
 
 /* callback_iterator */
-template <typename Iter>
+template <
+  typename Iter
+, typename Iterator_catagory
+>
 class callback_iterator
 : public std::iterator <
   typename std::iterator_traits<Iter>
@@ -60,24 +63,6 @@ class callback_iterator
 >
 {
 public:
-
-typedef Iter iterator_type;
-
-typedef typename
-std::iterator_traits<Iter>::value_type
-value_type;
-
-typedef typename
-  std::iterator_traits<Iter>
-::difference_type difference_type;
-
-typedef typename Iter::pointer pointer;
-
-typedef typename Iter::reference
-reference;
-
-typedef typename Iter::iterator_category
-iterator_category;
 
 /* ctor */
 template <typename Callback>
@@ -119,42 +104,7 @@ operator=(
   callback_iterator<Iter> &&
 ) = default;
 
-/* operator increment */
-callback_iterator<Iter> &
-operator++(
-){
-this->do_callback(iter_ops::increment);
-(this->iter)++;
-return *this;
-}
-
-/* operator increment */
-callback_iterator<Iter> &
-operator++(
-  int _dummy
-){
-this->do_callback(iter_ops::increment);
-++(this->iter);
-return *this;
-}
-
 /***************************** Output */
-/* operator * */
-template <
-  typename Cat = iterator_category
->
-typename std::enable_if<
-  std::is_same<
-    Cat
-  , std::output_iterator_tag
-  >::value
-, Iter
->::type
-operator*(){
-this->do_callback(iter_ops::deference);
-return *(this->iter);
-}
-
 /****************************** Input */
 /* operator -> */
 template <
@@ -417,7 +367,8 @@ typename std::enable_if<
 , callback_iterator<Iter> &
 >::value
 operator+=(
-  difference_type _n
+  typename bits
+  ::if_type<difference_type>::type _n
 ) const {
 this->iter += _n;
 return *this;
@@ -435,7 +386,8 @@ typename std::enable_if<
 , callback_iterator<Iter>
 >::value
 operator+(
-  difference_type _n
+  typename bits
+  ::if_type<difference_type>::type _n
 ) const {
 return
 callback_iterator<Iter>(
@@ -474,7 +426,9 @@ typename std::enable_if<
 , callback_iterator<Iter>
 >::value
 operator-(
-  difference_type const _n
+  typename bits
+  ::if_type<difference_type>
+  ::type const _n
 ) const {
 return callback_iterator<Iter>(
   (this->iter - _n)
@@ -495,7 +449,8 @@ typename std::enable_if<
 , callback_iterator<Iter> &
 >::value
 operator-=(
-  difference_type _n
+  typename bits
+  ::if_type<difference_type>::type _n
 ) const {
 this->iter -= _n;
 return *this;
@@ -512,30 +467,13 @@ typename std::enable_if<
   >::value
 , reference
 >::value
-operator[](difference_type _n) const {
+operator[](
+  typename bits
+  ::if_type<difference_type>::type _n
+) const {
 return this->iter[_n];
 }
 
-Iter
-get_iterator() const;
-
-private:
-
-std::function<
-  void(
-    Iter &
-  , iter_ops::operation_type const
-  )
-> callback;
-
-Iter iter;
-
-iter_ops::operation_type const ops;
-
-void
-do_callback(
-  iter_ops::operation_type const
-);
 }; /* callback_iterator */
 
 /* operator + */

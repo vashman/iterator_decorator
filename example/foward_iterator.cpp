@@ -5,15 +5,19 @@
 #include "../include/callback_iterator.hpp"
 
 using std::forward_list;
-using iter_decor::make_callback_iterator;
+using iterator_decorator::bind_callback;
+using iterator_decorator::iter_ops;
 
 int main (){
 forward_list<bool> list {false, true};
 
 auto iter (
-  make_callback_iterator(
+  bind_callback(
     list.begin()
-  , [](forward_list<bool>::iterator i){
+  , [](
+      forward_list<bool>::iterator & _i
+    , iter_ops::operation_type
+    ){
     std::cout << "f-called."
     << std::endl; 
     }

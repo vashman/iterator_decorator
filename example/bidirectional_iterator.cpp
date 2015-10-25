@@ -5,13 +5,14 @@
 #include "../include/callback_iterator.hpp"
 
 using std::vector;
-using iter_decor::callback_iterator;
+using iterator_decorator::bind_callback;
+using iterator_decorator::iter_ops;
 
 class functor {
 public:
   template <typename T>
   void
-  operator ()(T _v){
+  operator ()(T & _v, iter_ops::operation_type const &){
   std::cout << "functor called.\n";
   }
 };
@@ -20,21 +21,21 @@ int main (){
 vector<int> vec;
 auto b = vec.begin(), e = vec.end();
 
-callback_iterator<vector<int>::iterator>
-iter_b (b, func2, iter_ops::increment);
+auto iter_b (
+  bind_callback(b, functor(), iter_ops::increment)
+);
 
-callback_iterator<vector<int>::iterator>
-iter_e (e, func);
+auto iter_e (bind_callback(e));
 
-callback_iterator<vector<int>::iterator>
-iter_func (b, functor());
+auto iter_func (bind_callback(b));
 
-callback_iterator<vector<int>::iterator>
-iter_lam (
-  b
-, [](vector<int>::iterator){
-  std::cout << "Lam called.\n";
-  }
+auto iter_lam (
+  bind_callback(
+    b
+  , [](vector<int>::iterator &, iter_ops::operation_type const &){
+    std::cout << "Lam called.\n";
+    }
+  )
 );
 
 //find(iter_b, iter_e, 3);
