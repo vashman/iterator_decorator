@@ -1,51 +1,28 @@
+//
+
+#ifndef ITERATOR_DECORATOR_CALLBACK_ITERATOR_OUTPUT_HPP
+#define ITERATOR_DECORATOR_CALLBACK_ITERATOR_OUTPUT_HPP
 
 namespace iterator_decorator {
 
+/* callback_iterator */
 template <typename Iter>
-class callback_iterator <
-  std::output_iterator_tag
->
-: public std::iterator <
-  std::output_iterator_tag
-, typename std::iterator_traits<Iter>
-  ::value_type
-, typename std::iterator_traits<Iter>
-  ::difference_type
-, typename std::iterator_traits<Iter>
-  ::pointer
-, typename std::iterator_traits<Iter>
-  ::reference
->
+class callback_iterator <std::output_iterator_tag>
+: public callback_iterator_base <Iter>
 {
 public:
+/* ctor */
+using callback_iterator_base<Iter>
+::callback_iterator_base;
 
-typedef Iter iterator_type;
-
-typedef typename
-std::iterator_traits<Iter>::value_type
-value_type;
-
-typedef typename
-  std::iterator_traits<Iter>
-::difference_type difference_type;
-
-typedef typename Iter::pointer pointer;
-
-typedef typename Iter::reference
-reference;
-
-typedef typename Iter::iterator_category
-iterator_category;
-
-/* operator * */
-Iter
-operator* (
-){
+typename iterator_traits<>::
+operator -> (){
 this->do_callback(iter_ops::deference);
-return *(this->iter);
+return (this->iter).operator->();
 }
-} /* callback_iterator */
 
-} /* iterator_decorator */
+}; /* callback_iterator */
+
+} /* iter_decor */
+#include "bits/callback_iterator.tcc"
 #endif
-

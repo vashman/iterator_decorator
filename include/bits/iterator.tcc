@@ -1,170 +1,128 @@
+//
+
 #ifndef ITERATOR_DECORATOR_ITERATOR_TCC
 #define ITERATOR_DECORATOR_ITERATOR_TCC
+
+#include <type_traits>
 
 namespace iterator_decorator {
 /* inserter */
 template <
   typename T
-, typename Container
->
+, typename Container >
 std::insert_iterator<Container>
-inserter(
+inserter (
   Container & _c
 , typename Container::iterator _i
 ){
+static_assert (
+  std::is_same <
+    T, Container::value_type >::value
+, "Cannot get iterator for differnt"
+  " type."
+);
 return std::inserter(_c, _i);
-}
-
-/* ostream inserter overload */
-template <
-  typename T
-, typename CharT
-, typename traits
->
-std::ostream_iterator<T,CharT,traits>
-inserter(
-  std::basic_ostream<CharT,traits> &
-  _stream
-, std::ostream_iterator<T,CharT,traits>
-  _iterator
-){
-return _iterator;
 }
 
 /* front_inserter */
 template <
   typename T
-, typename Container
->
+, typename Container >
 std::front_insert_iterator<Container>
-front_inserter(
+front_inserter (
   Container & _c
 ){
-return std::front_inserter(_c); 
-}
-
-/* ostream front inserter
-  Should set the stream to
-*/
-template <
-  typename T
-, typename CharT
-, typename traits
->
-std::ostream_iterator<T,CharT,traits>
-front_inserter(
-  std::basic_ostream<CharT,traits>
-  & _stream
-){
-// _stream. ??
-return std
-::ostream_iterator<T,CharT,traits>(
-  _stream
+static_assert (
+  std::is_same <
+    T,Container::value_type >::value
+, "Cannot get iterator for differnt"
+  " type."
 );
+return std::front_inserter(_c); 
 }
 
 /* back_inserter */
 template <
   typename T
-, typename Container
->
+, typename Container >
 std::back_insert_iterator<Container>
-back_inserter(
+back_inserter (
   Container & _c
 ){
+static_assert (
+  std::is_same <
+    T,Container::value_type >::value
+, "Cannot get iterator for differnt"
+  " type."
+);
 return std::back_inserter(_c);
-}
-
-/* ostream back inserter */
-template <
-  typename T
-, typename charT
-, typename traits
->
-std::ostream_iterator<T,charT,traits>
-back_inserter(
-  std::basic_ostream<charT,traits> &
-  _stream
-){
-return
-std::ostream_iterator<T,charT,traits>
-(_stream);
 }
 
 /* template begin */
 template <
   typename T
-, typename Container
->
+, typename Container >
 typename Container::iterator
-begin(
+begin (
   Container & _c
 ){
+static_assert (
+  std::is_same <
+    T,Container::value_type >::value
+, "Cannot get iterator for differnt"
+  " type."
+);
 return std::begin(_c);
 }
 
 /* template end */
 template <
   typename T
-, typename Container
->
+, typename Container >
 typename Container::iterator
-end(
+end (
   Container & _c
 ){
+static_assert (
+  std::is_same <
+    T,Container::value_type >::value
+, "Cannot get iterator for differnt"
+  " type."
+);
 return std::end(_c);
-}
-
-/* istream begin */
-template <
-  typename T
-, typename charT
-, typename traits
->
-std::istream_iterator<T,charT,traits>
-begin(
-  std::basic_istream<charT,traits> & _is
-){
-return std
-::istream_iterator<T,charT,traits>(_is);
-}
-
-/* istream end */
-template <
-  typename T
-, typename charT
-, typename traits
->
-std::istream_iterator<T,charT,traits>
-end(
-  std::basic_istream<charT,traits> const
-  &
-){
-return std
-::istream_iterator<T,charT,traits>();
 }
 
 /* template cbegin */
 template <
   typename T
-, typename Container
->
+, typename Container >
 typename Container::const_iterator
-cbegin(
+cbegin (
   Container & _con
 ){
+static_assert (
+  std::is_same <
+    T,Container::value_type> ::value
+, "Connect get const_iterator for"
+  " differnt type."
+);
 return _con.cbegin();
 }
 
 /* template cend */
 template <
   typename T
-, typename Container
->
+, typename Container >
 typename Container::const_iterator
-cend(
+cend (
   Container & _con
 ){
+static_assert (
+  std::is_same <
+    T,Container::value_type >::value
+, "Connect get const_iterator for"
+  " differnt type."
+);
 return _con.cend();
 }
 

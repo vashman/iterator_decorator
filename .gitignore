@@ -33,6 +33,7 @@ runme
 *.swp
 *.*~
 /.c9
+*.project
 
 # Log files
 *.log

@@ -63,6 +63,23 @@ class callback_iterator
 >
 {
 public:
+typedef Iter iterator_type;
+
+typedef typename
+std::iterator_traits<Iter>::value_type
+value_type;
+
+typedef typename
+  std::iterator_traits<Iter>
+::difference_type difference_type;
+
+typedef typename Iter::pointer pointer;
+
+typedef typename Iter::reference
+reference;
+
+typedef typename Iter::iterator_category
+iterator_category;
 
 /* ctor */
 template <typename Callback>
@@ -507,16 +524,17 @@ callback_iterator<Iter>(
 */
 template <
   typename Iter
-, typename Callback
->
-callback_iterator<Iter>
-bind_callback(
+, typename Iter_Catagory
+, typename Callback >
+callback_iterator<Iter, Iter_Catagory>
+bind_callback (
   Iter _iter
 , Callback _callback
-, iter_ops::operation_type const
-  _ops = iter_ops::none
+, iter_ops::operation_type
+  const _ops = iter_ops::none
 ){
-return callback_iterator<Iter>(
+return
+callback_iterator<Iter,Iter_Catagory> (
   _iter
 , _callback
 , _ops
@@ -526,12 +544,15 @@ return callback_iterator<Iter>(
 /* bind_callback
   Make a callback iterator.
 */
-template <typename Iter>
-callback_iterator<Iter>
-bind_callback(
+template <
+  typename Iter
+, typename Iter_Catagory >
+callback_iterator<Iter,Iter_Catagory>
+bind_callback (
   Iter _iter
 ){
-return callback_iterator<Iter>(
+return
+callback_iterator<Iter,Iter_Catagory> (
   _iter
 , iter_ops::none
 );
