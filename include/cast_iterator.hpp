@@ -1,7 +1,7 @@
 //
 
-#ifndef ITERATOR_DECORATOR_TYPED_ITERATOR_HPP
-#define ITERATOR_DECORATOR_TYPED_ITERATOR_HPP
+#ifndef ITERATOR_DECORATOR_CAST_ITERATOR_HPP
+#define ITERATOR_DECORATOR_CAST_ITERATOR_HPP
 
 #include <iterator>
 
@@ -11,51 +11,51 @@ template <
   typename T
 , typename Iterator
 , typename Catagory >
-struct typed_iterator ;
+struct cast_iterator ;
 
 template <typename T, typename Iterator>
-struct typed_iterator <
+struct cast_iterator <
   T
 , Iterator
 , std::input_iterator_tag >;
 
 template <typename T, typename Iterator>
-struct typed_iterator <
+struct cast_iterator <
   T
 , Iterator
 , std::output_iterator_tag >;
 
 template <typename T, typename Iterator>
-struct typed_iterator <
+struct cast_iterator <
   T
 , Iterator
 , std::forward_iterator_tag >;
 
 template <typename T, typename Iterator>
-struct typed_iterator <
+struct cast_iterator <
   T
 , Iterator
 , std::bidirectional_iterator_tag >;
 
 template <typename T, typename Iterator>
-struct typed_iterator <
+struct cast_iterator <
   T
 , Iterator
 , std::random_access_iterator_tag >;
 
 template <typename T, typename Iterator>
 auto
-make_typed_iterator (
+make_cast_iterator (
   Iterator
 )
--> typed_iterator <T,Iterator, typename std::iterator_traits<Iterator>::iterator_category>;
+-> cast_iterator <T,Iterator, typename std::iterator_traits<Iterator>::iterator_category>;
 
 }
-#include "./bits/typed_iterator_input.hpp"
-#include "./bits/typed_iterator_output.hpp"
-#include "./bits/typed_iterator_forward.hpp"
-#include "./bits/typed_iterator_bidirectional.hpp"
-#include "./bits/typed_iterator_random.hpp"
-#include "./bits/typed_iterator.tcc"
+#include "./bits/cast_iterator_input.hpp"
+#include "./bits/cast_iterator_output.hpp"
+#include "./bits/cast_iterator_forward.hpp"
+#include "./bits/cast_iterator_bidirectional.hpp"
+#include "./bits/cast_iterator_random.hpp"
+#include "./bits/cast_iterator.tcc"
 #endif
 

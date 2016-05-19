@@ -1,33 +1,33 @@
 //
 
-#ifndef ITERATOR_DECORATOR_TYPED_ITERATOR_BASE_HPP
-#define ITERATOR_DECORATOR_TYPED_ITERATOR_BASE_HPP
+#ifndef ITERATOR_DECORATOR_CAST_ITERATOR_BASE_HPP
+#define ITERATOR_DECORATOR_CAST_ITERATOR_BASE_HPP
 
 #include <iterator>
 
 namespace iterator_decorator {
 
 template <typename T, typename Iterator>
-struct typed_iterator_base;
+struct cast_iterator_base;
 
 template <typename T, typename Iterator>
 bool
 operator == (
-  typed_iterator_base<T,Iterator> const&
-, typed_iterator_base<T,Iterator> const&
+  cast_iterator_base<T,Iterator> const&
+, cast_iterator_base<T,Iterator> const&
 );
 
 template <typename T, typename Iterator>
 bool
 operator != (
-  typed_iterator_base<T,Iterator> const&
-, typed_iterator_base<T,Iterator> const&
+  cast_iterator_base<T,Iterator> const&
+, cast_iterator_base<T,Iterator> const&
 );
 
 
 /* typed iterator base */
 template <typename T, typename Iterator>
-struct typed_iterator_base
+struct cast_iterator_base
 : public std::iterator <
     typename std
     ::iterator_traits <Iterator>
@@ -48,26 +48,26 @@ struct typed_iterator_base
 {
 
 explicit
-typed_iterator_base (
+cast_iterator_base (
   Iterator &
 );
 
-typed_iterator_base (
-  typed_iterator_base<T,Iterator> const&
+cast_iterator_base (
+  cast_iterator_base<T,Iterator> const&
 ) = default;
 
-typed_iterator_base <T,Iterator> &
+cast_iterator_base <T,Iterator> &
 operator = (
-  typed_iterator_base<T,Iterator> const&
+  cast_iterator_base<T,Iterator> const&
 ) = default;
 
-typed_iterator_base (
-  typed_iterator_base<T,Iterator> &&
+cast_iterator_base (
+  cast_iterator_base<T,Iterator> &&
 ) = default;
 
-typed_iterator_base <T,Iterator> &
+cast_iterator_base <T,Iterator> &
 operator = (
-  typed_iterator_base<T,Iterator> &&
+  cast_iterator_base<T,Iterator> &&
 ) = default;
 
 protected:
@@ -75,15 +75,15 @@ protected:
 
 friend bool
 operator != <>(
-  typed_iterator_base<T,Iterator> const&
-, typed_iterator_base<T,Iterator> const&
+  cast_iterator_base<T,Iterator> const&
+, cast_iterator_base<T,Iterator> const&
 );
 
 }; /* typed iterator base */
 
 template <typename T, typename Iterator>
-  typed_iterator_base <T,Iterator>
-::typed_iterator_base (
+  cast_iterator_base <T,Iterator>
+::cast_iterator_base (
   Iterator & _iterator
 )
 : iterator (_iterator)
@@ -93,9 +93,9 @@ template <typename T, typename Iterator>
 template <typename T, typename Iterator>
 bool
 operator == (
-  typed_iterator_base<T,Iterator>
+  cast_iterator_base<T,Iterator>
   const & _lhs
-, typed_iterator_base<T,Iterator>
+, cast_iterator_base<T,Iterator>
   const & _rhs
 ){
 return !(_lhs != _rhs);
@@ -104,9 +104,9 @@ return !(_lhs != _rhs);
 template <typename T, typename Iterator>
 bool
 operator != (
-  typed_iterator_base<T,Iterator>
+  cast_iterator_base<T,Iterator>
   const & _lhs
-, typed_iterator_base<T,Iterator>
+, cast_iterator_base<T,Iterator>
   const & _rhs
 ){
 return _lhs.iterator != _rhs.iterator;

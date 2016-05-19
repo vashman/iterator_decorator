@@ -1,53 +1,53 @@
 //
 
-#ifndef ITERATOR_DECORATOR_TYPED_ITERATOR_INPUT_HPP
-#define ITERATOR_DECORATOR_TYPED_ITERATOR_INPUT_HPP
+#ifndef ITERATOR_DECORATOR_CAST_ITERATOR_INPUT_HPP
+#define ITERATOR_DECORATOR_CAST_ITERATOR_INPUT_HPP
 
-#include "typed_iterator_base.hpp"
+#include "cast_iterator_base.hpp"
 
 namespace iterator_decorator {
 
 template <typename T, typename Iterator>
-struct typed_iterator <
+struct cast_iterator <
   T
 , Iterator
 , std::input_iterator_tag >
 : public
-  typed_iterator_base <T, Iterator>
+  cast_iterator_base <T, Iterator>
 {
 
 explicit
-typed_iterator (
+cast_iterator (
   Iterator &
 );
 
-typed_iterator (
-  typed_iterator <
+cast_iterator (
+  cast_iterator <
     T
   , Iterator
   , std::input_iterator_tag > const &
 ) = default;
 
-typed_iterator <
+cast_iterator <
   T,Iterator,std::input_iterator_tag > &
 operator = (
-  typed_iterator  <
+  cast_iterator  <
     T
   , Iterator
   , std::input_iterator_tag> const &
 ) = default;
 
-typed_iterator (
-  typed_iterator <
+cast_iterator (
+  cast_iterator <
     T
   , Iterator
   , std::input_iterator_tag > &&
 ) = default;
 
-typed_iterator <
+cast_iterator <
   T,Iterator,std::input_iterator_tag > &
 operator = (
-  typed_iterator  <
+  cast_iterator  <
     T
   , Iterator
   , std::input_iterator_tag> &&
@@ -59,32 +59,32 @@ operator * ();
 T *
 operator -> ();
 
-typed_iterator <
+cast_iterator <
   T
 , Iterator
 , std::input_iterator_tag > &
 operator ++ ();
 
-typed_iterator <
+cast_iterator <
   T, Iterator, std::input_iterator_tag >
 operator ++ (int);
 
 }; /* typed iterator input */
 
 template <typename T, typename Iterator>
-typed_iterator <
+cast_iterator <
   T, Iterator, std::input_iterator_tag >
-::typed_iterator (
+::cast_iterator (
   Iterator & _iterator
 )
-: typed_iterator_base <T,Iterator>
+: cast_iterator_base <T,Iterator>
   (_iterator)
 {
 }
 
 template <typename T, typename Iterator>
 T
-typed_iterator <
+cast_iterator <
   T, Iterator, std::input_iterator_tag >
 ::operator * (){
 return static_cast<T> (
@@ -93,7 +93,7 @@ return static_cast<T> (
 
 template <typename T, typename Iterator>
 T *
-typed_iterator <
+cast_iterator <
   T, Iterator, std::input_iterator_tag >
 ::operator -> (
 ){
@@ -102,11 +102,11 @@ return static_cast<T*> (
 }
 
 template <typename T, typename Iterator>
-typed_iterator <
+cast_iterator <
   T
 , Iterator
 , std::input_iterator_tag > &
-typed_iterator <
+cast_iterator <
   T, Iterator, std::input_iterator_tag >
 ::operator ++ (
 ){
@@ -115,9 +115,9 @@ return *this;
 }
 
 template <typename T, typename Iterator>
-typed_iterator <
+cast_iterator <
   T, Iterator, std::input_iterator_tag >
-typed_iterator <
+cast_iterator <
   T, Iterator, std::input_iterator_tag >
 ::operator ++ (
   int _dummy
